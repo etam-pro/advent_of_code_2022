@@ -41,10 +41,6 @@ class System
       @size = size.to_i
       @parent = parent
     end
-
-    def chart(indent = 0)
-      puts "#{" "*indent}#{name}"
-    end
   end
   
   def initialize(input)
