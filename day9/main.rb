@@ -5,19 +5,6 @@ DOWN = 'D'
 LEFT = 'L'
 RIGHT = 'R'
 
-def opposite_direction(direction)
-  case direction
-  when UP
-    DOWN
-  when DOWN
-    UP
-  when LEFT
-    RIGHT
-  when RIGHT
-    LEFT
-  end
-end
-
 def attached?(head, tail)
   head_x, head_y = head
   tail_x, tail_y = tail
