@@ -1,17 +1,10 @@
 require 'byebug'
 
-# NOTE: remove \n
-def trim(line)
-  line[0..-2]
-end
-
 def part_1
   max = 0
   acc = 0
 
-  File.open('day1/input').each do |line|
-    cal = trim(line)
-
+  File.readlines('day1/input', chomp: true).each do |cal|
     if cal == ''
       max = [max, acc].max
       acc = 0
@@ -28,9 +21,7 @@ def part_2
   acc = 0
   cals = []
 
-  File.open('day1/input').each do |line|
-    cal = trim(line)
-
+  File.readlines('day1/input', chomp: true).each do |cal|
     if cal == ''
       cals << acc
       acc = 0
