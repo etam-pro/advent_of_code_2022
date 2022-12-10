@@ -11,9 +11,6 @@ class Device
     ADDX => 2
   }
 
-  CYCLES_NO_OP = 1
-  CYCLES_ADD = 2
-
   CRT_SCREEN_WIDTH = 40
 
   attr_reader :signal_strength
