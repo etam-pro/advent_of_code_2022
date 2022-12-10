@@ -7,36 +7,28 @@ def marker?(token)
   token.split('').length == token.split('').uniq.length
 end
 
-def run
-  # PART 1
-  input = File.read('day6/input')
-
+def detect(input, marker_size)
   pointer = 0
 
-  while pointer <= input.length - START_MARKER_SIZE do
-    token = input[pointer..pointer+START_MARKER_SIZE-1]
+  while pointer <= input.length - marker_size do
+    token = input[pointer..pointer+marker_size-1]
     break if marker?(token)
     pointer += 1
   end
 
-  start_of_marker_idx = pointer + START_MARKER_SIZE 
-
-  puts "start-of-packet detected at: #{start_of_marker_idx}"
-
-  # PART 2
-  remaining = input[start_of_marker_idx..-1]
-  
-  pointer = 0
-
-  while pointer <= input.length - MESSAGE_MARKER_SIZE do
-    token = input[pointer..pointer+MESSAGE_MARKER_SIZE-1]
-    break if marker?(token)
-    pointer += 1
-  end
-
-  message_marker_idx = pointer + MESSAGE_MARKER_SIZE
-
-  puts "message marker detected at: #{message_marker_idx}"
+  pointer + marker_size
 end
 
-run
+def part_1(input)
+  idx = detect(input, START_MARKER_SIZE)
+  puts "start-of-packet detected at: #{idx}"
+end
+
+def part_2(input)
+  idx = detect(input, MESSAGE_MARKER_SIZE)
+  puts "message marker detected at: #{idx}"
+end
+
+input = File.read('day6/input')
+part_1(input)
+part_2(input)
