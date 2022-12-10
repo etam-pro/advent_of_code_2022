@@ -10,18 +10,13 @@ LOSE = 'X'
 DRAW = 'Y'
 WIN = 'Z'
 
-def trim(line)
-  return line if line[-1] != "\n"
-  return line[0..-2]
-end
-
 def normalize(move)
   case move
-  when 'A'
+  when 'A', 'X'
     return ROCK
-  when 'B'
+  when 'B', 'Y'
     return PAPER
-  when 'C'
+  when 'C', 'Z'
     return SCISSORS
   end
 end
@@ -54,17 +49,30 @@ def round_score(move1, move2)
   return 0
 end
 
-def run
-  total = File.open('day2/input')
+def part_1(input)
+  total = input
     .map do |line|
-      move, expected = trim(line).split(' ')
+      move1, move2 = line.split(' ').map { |move| normalize(move) }
+      move_score(move2) + round_score(move1, move2)
+    end
+    .sum
+
+  puts "Part 1: #{total}"
+end
+
+def part_2(input)
+  total = input
+    .map do |line|
+      move, expected = line.split(' ')
       move1 = normalize(move)
       move2 = counter_move(move1, expected)
       move_score(move2) + round_score(move1, move2)
     end
     .sum
 
-  puts "Advancing cheating: #{total}"
+  puts "Part 2: #{total}"
 end
 
-run
+input = File.readlines('day2/input', chomp: true)
+part_1(input)
+part_2(input)
