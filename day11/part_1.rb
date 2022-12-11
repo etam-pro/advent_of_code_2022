@@ -135,7 +135,7 @@ class KeepAway
 
 end
 
-def part_1(input)
+def run(input)
   keep_away = KeepAway.new(input)
   keep_away.parse!
   
