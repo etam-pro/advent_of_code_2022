@@ -1,5 +1,7 @@
 require 'byebug'
 
+DISTRESS_SIGNAL_MULTIPLIER = 4_000_000
+
 def draw_covered_areas!(acc, sensor, beacon)
   sensor_x, sensor_y = sensor
   beacon_x, beacon_y = beacon
@@ -26,35 +28,58 @@ def get_cover_size(covers, sensors, beacons, y)
   xs.count - y_sensors - y_beacons
 end
 
-def find_distress_signal()
-end
+def find_distress_signal(covered_areas)
+  slot = nil
 
-def part_1(input)
-  covered_areas = {}
+  candidate_ys = covered_areas
+    .each do |y, covered|
+      next if y < 0
+      
+      # Finds a slot right between 2 ranges
+      begins = covered.map { |range| range.begin }
+      ends = covered.map { |range| range.end }
+      possible_slot_anchors = begins.select { |b| ends.any? { |e| b - e == 2 } }.uniq
 
-  sensors = []
-  beacons = []
+      # Exclude if there is more than 1 possiblity (requirement)
+      next if possible_slot_anchors.count != 1
 
-  input.each do |line|
-    sensor, beacon = line
-      .split(':')
-      .map { |token| token.split('at').last }
-      .map do |xy|
-        xy
-          .gsub(' ', '')
-          .split(',')
-          .map { |val| val.split('=').last.to_i }
+      # x position of the candidate slot right before the 
+      x = possible_slot_anchors.first - 1
+
+      if !covered.any? { |c| c.cover?(x) }
+        slot = [x, y]
+        break
       end
-    
-    sensors << sensor
-    beacons << beacon
+    end
 
-    draw_covered_areas!(covered_areas, sensor, beacon)
-  end
+  raise "Signal not found!" if slot.nil?
 
-  size = get_cover_size(covered_areas, sensors, beacons, 2000000)
-  puts "#{size}"
+  x, y = slot
+  x * DISTRESS_SIGNAL_MULTIPLIER + y
 end
 
 input = File.readlines('day15/input', chomp: true)
-part_1(input)
+covered_areas = {}
+
+sensors = []
+beacons = []
+
+input.each do |line|
+  sensor, beacon = line
+    .split(':')
+    .map { |token| token.split('at').last }
+    .map do |xy|
+      xy
+        .gsub(' ', '')
+        .split(',')
+        .map { |val| val.split('=').last.to_i }
+    end
+  
+  sensors << sensor
+  beacons << beacon
+
+  draw_covered_areas!(covered_areas, sensor, beacon)
+end
+
+puts "Part 1: #{get_cover_size(covered_areas, sensors, beacons, 2_000_000)}"
+puts "Part 2: #{find_distress_signal(covered_areas)}"
