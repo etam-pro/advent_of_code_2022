@@ -27,7 +27,7 @@ class Cave
     @distance_map = distance_map
   end
 
-  def calc(time, opened, current_valve, acc = 0)
+  def calc(time, opened, current_valve = @valves.find { |v| v.name == 'AA' }, acc = 0)
     @max_pressure = acc if acc > @max_pressure
 
     # Exiting if remaining valves all open at once still can't beat the highest
@@ -123,7 +123,7 @@ def part_1(input)
 
   cave = Cave.new(_nodes.values)
 
-  cave.calc(30, [], cave.valves.first)
+  cave.calc(30, [])
 
   puts "Part 1: #{cave.max_pressure}"
 end
