@@ -4,19 +4,6 @@ def value?(token)
   token.to_i.to_s == token.to_s
 end
 
-def opposite(op)
-  case op
-  when '+'
-    '-'
-  when '-'
-    '+'
-  when '*'
-    '/'
-  when '/'
-    '*'
-  end
-end
-
 def calc(monkeys, monkey)
   return monkeys[monkey] if value?(monkeys[monkey]) 
     
