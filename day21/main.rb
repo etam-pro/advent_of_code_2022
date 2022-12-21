@@ -47,19 +47,20 @@ def calc2(monkeys, monkey)
     new_m1 = calc2(monkeys, _monkey)
     new_m2 = calc(monkeys, m1)
 
-    case op
-    when "-"
-      return eval "#{new_m2} - #{new_m1}"
-    when "+"
-      return eval "#{new_m1} - #{new_m2}"
-    when "*"
-      return eval "#{new_m1} / #{new_m2}"
-    when "/"
-      return eval "#{new_m2} / #{new_m1}"
-    end
-  end
+    new_op
+      case op
+      when "-"
+        return eval "#{new_m2} - #{new_m1}"
+      when "+"
+        return eval "#{new_m1} - #{new_m2}"
+      when "*"
+        return eval "#{new_m1} / #{new_m2}"
+      when "/"
+        return eval "#{new_m2} / #{new_m1}"
+      end
 
-  return eval "#{new_m1} #{opposite(op)} #{new_m2}"
+    return eval "#{new_m1} #{new_op} #{new_m2}"
+  end
 end
 
 def part_1(monkeys)
